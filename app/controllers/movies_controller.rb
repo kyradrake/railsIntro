@@ -11,7 +11,14 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    @movies = Movie.order(params[:sort_by])
+    # sort by title, hilight column header
+    if params[:sort_by] == 'title'
+      @title_header = 'hilite'
+    # sort by release date, hilight column header
+    elsif params[:sort_by] == 'release_date'
+      @release_header ='hilite'
+    end 
   end
 
   def new
@@ -40,10 +47,6 @@ class MoviesController < ApplicationController
     @movie.destroy
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
-  end
-  
-  def yellow_column_header(col)
-    params[:sort_by] == col.to_s ? 'hilite' : nil
   end
 
 end
