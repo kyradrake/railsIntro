@@ -4,7 +4,7 @@
 %table#movies
   %thead
     %tr
-      %th Movie Title AA
+      %th#title{:class => @title_css}= link_to "#{@title_glyph}Movie Title".html_safe, movies_path(key: 'title', asc: prev_col_reset('title')), id: 'title_header'
       %th Rating
       %th Release Date
       %th More Info
