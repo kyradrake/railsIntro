@@ -11,19 +11,32 @@ class MoviesController < ApplicationController
   end
 
   def index
+    # store sort_by in session
+    if params[:sort_by]
+      session[:sort_by] = params[:sortby]
+    end
+    
+    # store ratings in session
+    if params[:ratings] 
+      session[:ratings] = params[:ratings]
+    end
     
     @all_ratings = Movie.pluck(:rating).uniq
-    @ratings = params[:ratings] ? params[:ratings].keys : @all_ratings
+    @ratings = session[:ratings] ? session[:ratings].keys : @all_ratings
     
+    @movies = Movie.order(session[:sort_by]).where('rating IN (?)', @ratings)
     
-    @movies = Movie.order(params[:sort_by]).where('rating IN (?)', @ratings)
+    if !params[:ratings] && session[:ratings]
+      flash.keep
+      redirect_to movies_path(:sort_by => session[:sort_by], :ratings => session[:ratings])
+    end
     
     # sort by title, hilight column header
-    if params[:sort_by] == 'title'
+    if session[:sort_by] == 'title'
       @title_header = 'hilite'
     # sort by release date, hilight column header
-    elsif params[:sort_by] == 'release_date'
-      @release_header ='hilite'
+    elsif session[:sort_by] == 'release_date'
+      @release_date_header ='hilite'
     end 
   end
 
