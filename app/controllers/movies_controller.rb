@@ -30,14 +30,7 @@ class MoviesController < ApplicationController
       flash.keep
       redirect_to movies_path(:sort_by => session[:sort_by], :ratings => session[:ratings])
     end
-    
-    # sort by title, hilight column header
-    if session[:sort_by] == 'title'
-      @title_header = 'hilite'
-    # sort by release date, hilight column header
-    elsif session[:sort_by] == 'release_date'
-      @release_date_header ='hilite'
-    end 
+   
   end
 
   def new
