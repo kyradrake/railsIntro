@@ -13,7 +13,7 @@ class MoviesController < ApplicationController
   def index
     # store sort_by in session
     if params[:sort_by]
-      session[:sort_by] = params[:sortby]
+      session[:sort_by] = params[:sort_by]
     end
     
     # store ratings in session
@@ -26,11 +26,11 @@ class MoviesController < ApplicationController
     
     @movies = Movie.order(session[:sort_by]).where('rating IN (?)', @ratings)
     
+    # if a user unchecks all checkboxes, use the settings stored in the session
     if !params[:ratings] && session[:ratings]
       flash.keep
       redirect_to movies_path(:sort_by => session[:sort_by], :ratings => session[:ratings])
     end
-   
   end
 
   def new
